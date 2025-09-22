@@ -12,9 +12,31 @@ const dateTo = ref()
 const page = ref()
 const limit = ref()
 const result = ref([])
+const searchQuery = ref('')
+
+const gridColumns = [
+  'barcode',
+  'brand',
+  'category',
+  'date',
+  'discount',
+  'in_way_from_client',
+  'in_way_to_client',
+  'is_realization',
+  'is_supply',
+  'last_change_date',
+  'nm_id',
+  'price',
+  'quantity',
+  'quantity_full',
+  'subject',
+  'supplier_article',
+  'tech_size',
+  'warehouse_name',
+]
 function makeParams() {
   // const API_PARAMS = `?dateFrom=${dateFrom.value}&dateTo=${dateTo.value}&page=${page.value}&key=E6kUTYrYwZq2tN4QEtyzsbEBk3ie&limit=${limit.value}`
-  const API_PARAMS = `?dateFrom=2025-09-20&dateTo=2025-09-20&page=1&key=E6kUTYrYwZq2tN4QEtyzsbEBk3ie&limit=100`
+  const API_PARAMS = `?dateFrom=2025-09-22&dateTo=2025-09-22&page=1&key=E6kUTYrYwZq2tN4QEtyzsbEBk3ie&limit=100`
   return API_PARAMS
 }
 const gridData = computed(() => {
@@ -42,6 +64,24 @@ const gridData = computed(() => {
   }
   return []
 })
+const resultBoxWare = []
+const selected = ref('')
+const warehouse = []
+const datecomb = []
+function fillBox() {
+  for (let key in gridData) {
+    if (gridData[key]) {
+      resultBoxWare.push(gridData[key])
+    }
+  }
+  const resultBoxWare1 = resultBoxWare[1]
+  for (let key in resultBoxWare1) {
+    warehouse.push(resultBoxWare1[key].warehouse_name)
+    datecomb.push(resultBoxWare1[key].date)
+  }
+  console.log(warehouse)
+  searchQuery = selected
+}
 watchEffect(async () => {
   const res = makeParams()
   const url = `${API_BASE}${currentEndpoint.value}${res}`
@@ -73,8 +113,20 @@ watchEffect(async () => {
     <input v-model="page" />
     <h2 class="text">Limit of symbols</h2>
     <input v-model="limit" />
+    <button
+      @click="fillBox"
+      style="position: absolute; left: +100px; top: +50px; width: 75px; height: 50px"
+    >
+      Fill
+    </button>
+    <select v-model="selected" style="display: flex">
+      <option v-for="item in warehouse">{{ item }}</option>
+    </select>
   </div>
-  <DemoGrid :data="gridData"></DemoGrid>
+  <div style="position: absolute; left: 250px">
+    <form id="search">Search <input name="query" v-model="searchQuery" /></form>
+    <DemoGrid :data="gridData" :columns="gridColumns" :filter-key="searchQuery"> </DemoGrid>
+  </div>
 </template>
 <style>
 .text {
