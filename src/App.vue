@@ -36,7 +36,7 @@ const gridColumns = [
 ]
 function makeParams() {
   // const API_PARAMS = `?dateFrom=${dateFrom.value}&dateTo=${dateTo.value}&page=${page.value}&key=E6kUTYrYwZq2tN4QEtyzsbEBk3ie&limit=${limit.value}`
-  const API_PARAMS = `?dateFrom=2025-09-22&dateTo=2025-09-22&page=1&key=E6kUTYrYwZq2tN4QEtyzsbEBk3ie&limit=100`
+  const API_PARAMS = `?dateFrom=2025-09-23&dateTo=2025-09-23&page=1&key=E6kUTYrYwZq2tN4QEtyzsbEBk3ie&limit=100`
   return API_PARAMS
 }
 const gridData = computed(() => {
@@ -64,29 +64,31 @@ const gridData = computed(() => {
   }
   return []
 })
-const resultBoxWare = []
+
 const selected = ref('')
-const warehouse = []
-const datecomb = []
-function fillBox() {
-  for (let key in gridData) {
-    if (gridData[key]) {
-      resultBoxWare.push(gridData[key])
-    }
+const warehouse = computed(() => {
+  const warehouses = []
+  for (let key in gridData.value) {
+    warehouses.push(gridData.value[key].warehouse_name)
   }
-  const resultBoxWare1 = resultBoxWare[1]
-  for (let key in resultBoxWare1) {
-    warehouse.push(resultBoxWare1[key].warehouse_name)
-    datecomb.push(resultBoxWare1[key].date)
+  return warehouses
+})
+
+const selected1 = ref('')
+const datecomb = computed(() => {
+  const datecombs = []
+  console.log(gridData.value)
+  for (let key in gridData.value) {
+    datecombs.push(gridData.value[key].last_change_date)
   }
-  console.log(warehouse)
-  searchQuery = selected
-}
+
+  return datecombs
+})
+
 watchEffect(async () => {
   const res = makeParams()
   const url = `${API_BASE}${currentEndpoint.value}${res}`
   result.value = await (await fetch(url)).json()
-  console.log(result.value)
 })
 </script>
 <template>
@@ -113,14 +115,15 @@ watchEffect(async () => {
     <input v-model="page" />
     <h2 class="text">Limit of symbols</h2>
     <input v-model="limit" />
-    <button
-      @click="fillBox"
-      style="position: absolute; left: +100px; top: +50px; width: 75px; height: 50px"
+
+    <select v-model="selected" style="position: absolute; display: flex; width: 150px; top: +400px">
+      <option v-for="itemWare in warehouse" :key="itemWare">{{ itemWare }}</option>
+    </select>
+    <select
+      v-model="selected1"
+      style="position: absolute; display: flex; width: 150px; top: +450px"
     >
-      Fill
-    </button>
-    <select v-model="selected" style="display: flex">
-      <option v-for="item in warehouse">{{ item }}</option>
+      <option v-for="itemDateCh in datecomb" :key="itemDateCh">{{ itemDateCh }}</option>
     </select>
   </div>
   <div style="position: absolute; left: 250px">
