@@ -40,6 +40,30 @@ function sortBy(key) {
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
+const currentPage = ref(1)
+const itemsPerPage = 10
+const paginatedData = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return filteredData.value.slice(start, end)
+})
+const totalPages = computed(() => {
+  return Math.ceil(filteredData.value.length / itemsPerPage)
+})
+const handlePageChange = (pageNum) => {
+  currentPage.value = pageNum
+}
+function nextPage() {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++
+  }
+}
+
+function prevPage() {
+  if (currentPage.value > 1) {
+    currentPage.value--
+  }
+}
 </script>
 
 <template>
@@ -53,14 +77,33 @@ function capitalize(str) {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="entry in filteredData">
+      <tr v-for="entry in paginatedData" :key="entry.id">
         <td v-for="key in columns">
           {{ entry[key] }}
         </td>
       </tr>
     </tbody>
   </table>
-  <p v-else>No matches found.</p>
+  <div class="pagination">
+    <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
+
+    <span class="page-info">
+      Page {{ currentPage }} of {{ totalPages }} ({{ filteredData.length }} total records)
+    </span>
+
+    <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
+    <div class="page-numbers">
+      <button
+        v-for="pageNum in totalPages"
+        :key="pageNum"
+        @click="handlePageChange(pageNum)"
+        :class="{ active: currentPage === pageNum }"
+        class="page-btn"
+      >
+        {{ pageNum }}
+      </button>
+    </div>
+  </div>
 </template>
 
 <style>

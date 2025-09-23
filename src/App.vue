@@ -2,7 +2,6 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { ref, watchEffect, computed } from 'vue'
 import DemoGrid from './Grid.vue'
-
 //    E6kUTYrYwZq2tN4QEtyzsbEBk3ie
 const API_BASE = `http://109.73.206.144:6969/api/`
 const API_ENDPOINTS = ['stocks', 'incomes', 'sales', 'orders']
@@ -65,7 +64,6 @@ const gridData = computed(() => {
   return []
 })
 
-const selected = ref('')
 const warehouse = computed(() => {
   const warehouses = []
   for (let key in gridData.value) {
@@ -74,7 +72,6 @@ const warehouse = computed(() => {
   return warehouses
 })
 
-const selected1 = ref('')
 const datecomb = computed(() => {
   const datecombs = []
   console.log(gridData.value)
@@ -92,7 +89,7 @@ watchEffect(async () => {
 })
 </script>
 <template>
-  <div style="position: absolute; left: 10px; top: 10px">
+  <div style="">
     <template v-for="Endpoint in API_ENDPOINTS">
       <input
         type="radio"
@@ -103,37 +100,52 @@ watchEffect(async () => {
         style="top: 0px"
         v-model="currentEndpoint"
       />
-      <label :for="Endpoint" :style="{ position: 'relative', paddingTop: '10px' }"
-        >{{ Endpoint }}<br
-      /></label>
+      <label :for="Endpoint" :style="{ position: 'relative' }">{{ Endpoint }}<br /></label>
     </template>
-    <h2 class="text">DateFrom</h2>
+    <h5 class="text">DateFrom</h5>
     <input v-model="dateFrom" />
-    <h2 class="text">dateTo</h2>
+    <h5 class="text">dateTo</h5>
     <input v-model="dateTo" />
-    <h2 class="text">Page</h2>
+    <h5 class="text">Page</h5>
     <input v-model="page" />
-    <h2 class="text">Limit of symbols</h2>
+    <h5 class="text">Limit of symbols</h5>
     <input v-model="limit" />
-
-    <select v-model="selected" style="position: absolute; display: flex; width: 150px; top: +400px">
-      <option v-for="itemWare in warehouse" :key="itemWare">{{ itemWare }}</option>
+    <form id="search" style="display: flex">
+      Search <input name="query" v-model="searchQuery" style="display: inline-block" />
+    </form>
+    <select v-model="searchQuery" style="position: relative; display: inline-block">
+      <option value="">Empty</option>
+      <option v-for="itemWare in warehouse" :filter-key="itemWare">{{ itemWare }}</option>
     </select>
-    <select
-      v-model="selected1"
-      style="position: absolute; display: flex; width: 150px; top: +450px"
-    >
-      <option v-for="itemDateCh in datecomb" :key="itemDateCh">{{ itemDateCh }}</option>
+    <select v-model="searchQuery" style="position: relative; display: inline-block; width: 150px">
+      <option value="">Empty</option>
+      <option v-for="itemDateCh in datecomb" :filter-key="itemDateCh">{{ itemDateCh }}</option>
     </select>
-  </div>
-  <div style="position: absolute; left: 250px">
-    <form id="search">Search <input name="query" v-model="searchQuery" /></form>
     <DemoGrid :data="gridData" :columns="gridColumns" :filter-key="searchQuery"> </DemoGrid>
   </div>
 </template>
 <style>
+@import 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css';
 .text {
-  position: relative;
-  padding-top: 10px;
+  display: inline-block;
+  margin: 10px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+.page-item {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+.page-item:hover {
+  background-color: #f0f0f0;
+}
+.active-page {
+  background-color: #007bff;
+  color: #fff;
 }
 </style>
