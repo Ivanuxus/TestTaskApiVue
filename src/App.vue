@@ -319,6 +319,7 @@ const chartData = computed(() => {
 @import 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css';
 .text {
   display: inline-block;
+  color: black;
   margin: 10px;
 }
 
