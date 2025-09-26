@@ -115,7 +115,7 @@ table {
 
 th {
   background-color: #42b983;
-  color: #42b983;
+  color: #000000;
   cursor: pointer;
   user-select: none;
 }
