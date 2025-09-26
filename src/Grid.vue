@@ -110,7 +110,7 @@ function prevPage() {
 table {
   border: 2px solid #42b983;
   border-radius: 3px;
-  background-color: #fff;
+  background-color: rgb(59, 43, 43)
 }
 
 th {
