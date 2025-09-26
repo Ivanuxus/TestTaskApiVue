@@ -3,7 +3,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import { ref, watchEffect, computed } from 'vue'
 import DemoGrid from './Grid.vue'
 import DemoChart from './BarChart.vue'
-const API_BASE = `http://109.73.206.144:6969/api/`
+const API_BASE = `/api/`
 const API_ENDPOINTS = ['stocks', 'incomes', 'sales', 'orders']
 const currentEndpoint = ref(API_ENDPOINTS[0])
 const dateFrom = ref('2025-09-26')
