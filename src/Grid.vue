@@ -128,6 +128,7 @@ th,
 td {
   min-width: 120px;
   padding: 10px 20px;
+  color: #000000;
 }
 
 th.active {
