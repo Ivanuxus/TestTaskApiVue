@@ -110,18 +110,18 @@ function prevPage() {
 table {
   border: 2px solid #42b983;
   border-radius: 3px;
-  background-color: rgb(59, 43, 43)
+  background-color: #42b983;
 }
 
 th {
   background-color: #42b983;
-  color: rgba(255, 255, 255, 0.66);
+  color: #42b983;
   cursor: pointer;
   user-select: none;
 }
 
 td {
-  background-color: #f9f9f9;
+  background-color: rgb(65, 57, 57);
 }
 
 th,
@@ -131,7 +131,7 @@ td {
 }
 
 th.active {
-  color: #fff;
+  color:#42b983;
 }
 
 th.active .arrow {
@@ -150,12 +150,12 @@ th.active .arrow {
 .arrow.asc {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-bottom: 4px solid #fff;
+  border-bottom: 4px solid #42b983;
 }
 
 .arrow.dsc {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-top: 4px solid #fff;
+  border-top: 4px solid #42b983;
 }
 </style>
